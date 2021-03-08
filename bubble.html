@@ -1,0 +1,55 @@
+<!doctype html>
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>D3-Bubbles</title>
+        <style>
+        * {
+          font-family: "Courier";
+        }
+        p, text {
+            font-size: 1.0em;
+        }
+        svg {
+            background: #939393;
+        }
+        div.tooltip {
+          position: absolute;
+          text-align: center;
+          width: 95px;
+          height: 48px;
+          padding: 2px;
+          font: 12px sans-serif;
+          background: lightsteelblue;
+          border: 0px;
+          border-radius: 8px;
+          pointer-events: none;
+        }
+        button {
+          transition-duration: 0.4s;
+          border: 2px solid black;
+          font-size: 16px;
+          border-radius: 8px;
+          background-color :white;
+        }
+        button:hover {
+        background-color: orange;
+        color: white;
+      }
+        </style>
+    </head>
+    <body>
+        <h1>Sorting Customers Based on Sales Volume and Number of Sales</h1>
+        <button id="volume">Volume</button>
+        <button id="nSales">n Sales</button>
+        <button id="unsorted">unsorted</button>
+        <div id="chart"></div>
+        <!-- D3 library -->
+        <!--script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.10.0/d3.min.js"></script-->
+        <script src="https://d3js.org/d3.v4.min.js"></script>
+
+        <!-- own visualizatoin -->
+        <script src="bubbles.js"></script>
+    </body>
+</html>
