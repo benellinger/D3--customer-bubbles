@@ -119,7 +119,7 @@
 		.force("y", forceY)
 		.force("anticollide", forceCollide)
 
-	var data = d3.queue()
+	d3.queue()
 		.defer(d3.csv, "coordinates.csv")
 		.await(ready)
 
@@ -174,8 +174,13 @@
 
 
 			 function tabulate(data, columns) {
-			     var table = svg.append("table")
-			             .attr("style", "margin-left: 250px"),
+
+			     var table = d3.select('body').append("table")
+						//.attr("x", 160)
+						.attr("style", "margin-left: 770px")
+						.attr("class", "table-bordered")
+			            .style("border-collapse", "collapse")
+	                 	.style("border", "2px black solid");
 			         thead = table.append("thead"),
 			         tbody = table.append("tbody");
 
@@ -185,13 +190,19 @@
 			         .data(columns)
 			         .enter()
 			         .append("th")
-			             .text(function(column) { return column; });
+			             .text(function(column) { return column; })
+					 .style("border", "1px black solid")
+					 .style("padding", "5px")
+					 .style("background-color", "lightgray")
+					 .style("font-weight", "bold");
 
 			     // create a row for each object in the data
 			     var rows = tbody.selectAll("tr")
 			         .data(data)
 			         .enter()
-			         .append("tr");
+			         .append("tr")
+					 .style("border", "1px black solid")
+					 .style("padding", "5px");
 
 			     // create a cell in each row for each column
 			     var cells = rows.selectAll("td")
@@ -214,6 +225,7 @@
 	  // define rectangles for grouping of bubbles
     var addRectangles = function(t) {
 			for(var i=0; i<5; i++) { svg.append("rect")
+				.data(datapoints)
 				.attr("x", rectCoor.x[i])
 				.attr("y", rectCoor.y[i])
 				.attr("opacity", .15)
@@ -224,13 +236,15 @@
 				.on("mouseover", function(d) {
 						d3.select(this)
 							.style('fill', 'blue')
+							.on('click', function(d){
+								tabulate(datapoints, ["customerID", 'sum', 'radius'])
+								d3.selectAll('table').raise()
+							})
 				})
-				.on("mouseout", function(d) {
+				.on("mouseout", function() {
 						d3.select(this)
 							.style('fill', 'white')
-							.on('click', function(){
-								tabulate(d.sum, ['customerID', 'sum'])
-							})
+							//d3.selectAll('table').remove()
 				})
 				svg.append("text")
 					.attr("x", rectCoor.x[i]+30)
@@ -240,6 +254,11 @@
 					.text(t[i]);
 			}
 		}
+		
+		
+		
+		
+		
 		// selecting different types of data
 		d3.select("#volume").on("click", function() {
 			d3.selectAll("text").remove();
@@ -278,43 +297,6 @@
 				.restart()
 		})
 
-
-	// 	var rows  = d3.csvParseRows(["Custom ID", "Volume"]),
-	//       table = d3.select('body').append('table')
-	//                 .style("border-collapse", "collapse")
-	//                 .style("border", "2px black solid");
-	//
-	//   // headers
-	//   table.append("thead").append("tr")
-	//     .selectAll("th")
-	//     .data(rows[0])
-	//     .enter().append("th")
-	//     .text(function(d) { return d; })
-	//     .style("border", "1px black solid")
-	//     .style("padding", "5px")
-	//     .style("background-color", "lightgray")
-	//     .style("font-weight", "bold")
-	//     .style("text-transform", "uppercase");
-	//
-	//   // data
-	//   table.append("tbody")
-	//     .selectAll("tr").data(rows.slice(1))
-	//     .enter().append("tr")
-	//     .selectAll("td")
-	//     .data(function(d){return d;})
-	//     .enter().append("td")
-	//     .style("border", "1px black solid")
-	//     .style("padding", "5px")
-	//     .on("mouseover", function(){
-	//     d3.select(this).style("background-color", "powderblue");
-	//   })
-	//     .on("mouseout", function(){
-	//     d3.select(this).style("background-color", "white");
-	//   })
-	//     .text(function(d){return d;})
-	//     .style("font-size", "12px");
-	// });
-	// The table generation function
 
 
 		simulation.nodes(datapoints)
